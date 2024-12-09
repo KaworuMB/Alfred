@@ -77,14 +77,14 @@ li , ol , ul{
     align-items: center;
 }
 .Parking_text{
-    
+
     color: #fff;
     text-decoration: none;
     font-weight: 700;
     font-size: 64px;
     margin-right: 25px;
     transition: color 0.3s linear;
-    
+
 }
 .main {
     flex-grow: 1;

@@ -1,8 +1,12 @@
 package com.example.alfred;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 
@@ -67,7 +71,9 @@ public class AuthController {
 
     // Вход пользователя
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<Map<String, Object>> loginUser(@RequestBody Map<String, String> loginData) {
+        String username = loginData.get("username");
+        String password = loginData.get("password");
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -80,15 +86,23 @@ public class AuthController {
             // Выполняем запрос
             ResultSet resultSet = statement.executeQuery();
 
+            Map<String, Object> response = new HashMap<>();
+
             if (resultSet.next()) {
-                return "redirect:/main.html";
+                response.put("success", true);
+                return ResponseEntity.ok(response);
             } else {
-                return "Неверный email или пароль.";
+                response.put("success", false);
+                response.put("message", "Неверное имя пользователя или пароль.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return "Ошибка при входе.";
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "Ошибка при входе.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

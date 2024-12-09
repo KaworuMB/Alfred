@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            margin: 10px 0;
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Reports List</h1>
+<button id="refreshButton">Refresh Data</button>
+<table id="reportsTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Problem Type</th>
+        <th>Report Details</th>
+        <th>Image</th>
+        <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Данные будут добавлены здесь -->
+    </tbody>
+</table>
+
+<script>
+    // Функция загрузки данных
+    async function loadReports() {
+        try {
+            const response = await fetch("/reports");
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const reports = await response.json();
+
+            const tableBody = document.querySelector("#reportsTable tbody");
+            tableBody.innerHTML = ""; // Очищаем таблицу перед добавлением данных
+
+            if (reports.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='5'>No reports found.</td></tr>";
+            }
+
+            reports.forEach(report => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                        <td>${report.id}</td>
+                        <td>${report.problemType}</td>
+                        <td>${report.reportDetails}</td>
+                        <td><img src="${report.imagePath}" alt="Report Image" style="width: 100px; height: auto;"></td>
+                        <td>${report.username}</td>
+                    `;
+
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error loading reports:", error);
+            document.querySelector("#reportsTable tbody").innerHTML = "<tr><td colspan='5'>Error loading reports.</td></tr>";
+        }
+    }
+
+    // Добавляем обработчик для кнопки обновления
+    document.getElementById("refreshButton").addEventListener("click", () => {
+        loadReports(); // Загружаем данные
+    });
+
+    // Загружаем данные при загрузке страницы
+    window.onload = loadReports;
+</script>
+</body>
+</html>
