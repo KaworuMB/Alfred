@@ -25,14 +25,16 @@ public class GA {
         System.out.println(username + " " + codeStr);
 
         int id = 0;
+        String email;
         // Get user ID based on username
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String sql1 = "Select user_id from users where username=?";
+            String sql1 = "Select user_id,email from users where username=?";
             try (PreparedStatement statement = connection.prepareStatement(sql1)) {
                 statement.setString(1, username);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     id = resultSet.getInt("user_id");
+                    email = resultSet.getString("email");
                 } else {
                     // Handle case where no user was found
                     throw new SQLException("No user found with the given username");
@@ -70,6 +72,7 @@ public class GA {
 
             if (rowsAffected > 0) {
                 response.put("success", true);
+                SenderEmail.sendEmail(email,"Guest Access","your guest access has been granted: "+codeStr);
                 return ResponseEntity.ok(response);
             } else {
                 response.put("success", false);

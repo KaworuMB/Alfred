@@ -6,7 +6,7 @@ body {
 }
 
 .header {
-    background: #35599A;
+    background: #487BA2;
     color: white;
     padding: 20px 0;
 }
@@ -55,7 +55,7 @@ body {
 
 .section h2 {
     font-size: 2rem;
-    color: #35599A;
+    color: #487BA2;
 }
 
 .section ul {
@@ -64,7 +64,7 @@ body {
 }
 
 .footer {
-    background: #35599A;
+    background: #487BA2;
     color: white;
     text-align: center;
     padding: 20px;

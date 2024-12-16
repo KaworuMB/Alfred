@@ -6,11 +6,20 @@
     <title>Report Page</title>
     <link rel="stylesheet" href="report.css">
     <script src="login.js" defer></script>
-
 </head>
 <body>
+<header class="header">
+    <button class="back-button" onclick="location.href='main.html'">←</button>
+    <h1>REPORT</h1>
+    <div class="user-icon">
+        <a class='nav-item' href="user.html">
+            <img src="user.png" alt="User Icon">
+        </a>
+    </div>
+</header>
+
+
 <div class="content">
-    <h1>Report</h1>
     <form id="reportForm">
         <div>
             <label for="image">Upload Image:</label>
@@ -28,6 +37,17 @@
     </form>
     <div id="responseMessage"></div>
 </div>
+
+<footer class="footer">
+    <div class="socials">
+        <a href="https://www.instagram.com/alfred_kz/">Instagram</a>
+        <a href="https://www.facebook.com/alfred.co">Facebook</a>
+    </div>
+    <div class="contact">
+        <p>+7 707 781 45 19</p>
+        <p>info@alfredapp.com</p>
+    </div>
+</footer>
 
 <script>
     function redirectToMain() {
@@ -47,7 +67,8 @@
         formData.append("image", image);
         formData.append("problemType", problemType);
         formData.append("reportDetails", reportDetails);
-        formData.append("username",localStorage.getItem('username'));
+        formData.append("username", localStorage.getItem('username'));
+
         try {
             const response = await fetch("/report", {
                 method: "POST",

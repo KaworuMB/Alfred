@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1E4E79;
+    background-color: #487BA2;
     color: white;
     padding: 15px 20px;
 }
@@ -84,7 +84,7 @@ textarea {
 
 .footer {
     height: 20vh; /* Footer takes 1/5th of the viewport height */
-    background-color: #1E4E79;
+    background-color: #487BA2;
     color: white;
     display: flex;
     flex-direction: column;

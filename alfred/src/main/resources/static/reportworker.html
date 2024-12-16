@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Page</title>
+  <link rel="stylesheet" href="report.css">
+</head>
+<body>
+
+<div class="content">
+  <form id="reportForm">
+    <div>
+      <label for="image">Upload Image:</label>
+      <input type="file" id="image" accept="image/*" required>
+    </div>
+    <div>
+      <label for="problemType">report id:</label>
+      <input type="text" id="problemType" placeholder="report id" required>
+    </div>
+    <div>
+      <label for="reportDetails">Report Details:</label>
+      <textarea id="reportDetails" placeholder="Describe the problem..." required></textarea>
+    </div>
+    <button type="submit">Submit Report</button>
+  </form>
+  <div id="responseMessage"></div>
+</div>
+<script>
+  function redirectToMain() {
+    window.location.href = "main.html";
+  }
+  const form = document.getElementById("reportForm");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Collecting form data
+    const formData = new FormData();
+    const image = document.getElementById("image").files[0];
+    const problemType = document.getElementById("problemType").value;
+    const reportDetails = document.getElementById("reportDetails").value;
+
+    formData.append("image", image);
+    formData.append("report_id", problemType);
+    formData.append("reportDetails", reportDetails);
+
+    try {
+      const response = await fetch("/reportend", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      document.getElementById("responseMessage").textContent = result.message;
+    } catch (error) {
+      console.error("Error:", error);
+      document.getElementById("responseMessage").textContent = "Error submitting the report.";
+    }
+  });
+</script>
+</body>
+</html>
